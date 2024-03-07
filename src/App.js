@@ -1,12 +1,10 @@
 import "./App.css";
-import Admin from "./components/Admin/Admin";
-import Header from "./components/Header/Header";
+import SignIn from "./components/Register/SignIn";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <Admin />
+      <SignIn />
     </div>
   );
 }

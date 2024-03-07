@@ -3,10 +3,18 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import ProductContext from "./context/ProductContext";
+import MainPoutes from "./routes/MainPoutes";
+import { BrowserRouter } from "react-router-dom";
+import AuthContext from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ProductContext>
-    <App />
-  </ProductContext>
+  <BrowserRouter>
+    <AuthContext>
+      <ProductContext>
+        <App />
+        <MainPoutes />
+      </ProductContext>
+    </AuthContext>
+  </BrowserRouter>
 );
