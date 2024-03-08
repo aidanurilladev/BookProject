@@ -38,7 +38,6 @@ const Edit = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        flexWrap: "wrap",
       }}
     >
       <Box
@@ -46,15 +45,15 @@ const Edit = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          flexDirection: "column",
           flexWrap: "wrap",
-          gap: "50px",
+          gap: "40px",
         }}
       >
         <TextField
           onChange={handleChangeInput}
           value={product.name}
           sx={{ width: "500px" }}
-          error
           id="filled-error-helper-text"
           name="name"
           label="name"
@@ -65,7 +64,6 @@ const Edit = () => {
           onChange={handleChangeInput}
           value={product.price}
           sx={{ width: "500px" }}
-          error
           name="price"
           label="price"
           id="filled-error-helper-text"
@@ -76,7 +74,6 @@ const Edit = () => {
           onChange={handleChangeInput}
           value={product.author}
           sx={{ width: "500px" }}
-          error
           name="author"
           label="author"
           id="filled-error-helper-text"
@@ -87,7 +84,6 @@ const Edit = () => {
           onChange={handleChangeInput}
           value={product.type}
           sx={{ width: "500px" }}
-          error
           name="type"
           label="type"
           id="filled-error-helper-text"
@@ -98,7 +94,6 @@ const Edit = () => {
           onChange={handleChangeInput}
           value={product.image}
           sx={{ width: "500px" }}
-          error
           name="image"
           id="filled-error-helper-text"
           placeholder="Book_Image..."
@@ -109,7 +104,6 @@ const Edit = () => {
           onChange={handleChangeInput}
           value={product.annotation}
           sx={{ width: "500px" }}
-          error
           name="annotation"
           id="filled-error-helper-text"
           placeholder="Book_Annotation..."

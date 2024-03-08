@@ -17,7 +17,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Typography } from "@mui/material";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { Link, useNavigate } from "react-router-dom";
-import CardList from "../CardList/CardList";
+import Hero from "./Hero";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -87,172 +88,177 @@ export default function Header() {
 
   return (
     <>
-      <Box>
-        <AppBar
-          position="static"
-          top="0"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            background: "#DDE2E8",
-          }}
-        >
-          <Toolbar>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box>
-                <img
-                  style={{ borderRadius: "50%" }}
-                  width={150}
-                  src={logo}
-                  alt="logo"
-                />
-              </Box>
-              <Box>
-                <Search sx={{ position: "relative" }}>
-                  <SearchIconWrapper
+      <Box className="container">
+        <Box>
+          <AppBar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              background: "#DDE2E8",
+            }}
+          >
+            <Toolbar>
+              <Box className="header">
+                <Box>
+                  <img
+                    onClick={() => nav("/")}
+                    style={{ borderRadius: "50%" }}
+                    width={130}
+                    src={logo}
+                    alt="logo"
+                  />
+                </Box>
+                <Box>
+                  <Search>
+                    <SearchIconWrapper
+                      sx={{
+                        padding: "0.1px 20px",
+                        background: "#1FA2C5",
+                        position: "absolute",
+                        right: "-65px",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      <SearchIcon sx={{ fontSize: "30px" }} />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      sx={{
+                        width: "900px",
+                        height: "55px",
+                        color: "black",
+                        borderRadius: "3px",
+                        border: "1px solid white",
+                        background: "#fff",
+                      }}
+                      placeholder="Search…"
+                      inputProps={{ "aria-label": "search" }}
+                    />
+                  </Search>
+                </Box>
+                <Box sx={{ flexGrow: 1 }} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "500px",
+                    gap: "20px",
+                  }}
+                >
+                  <IconButton
+                    onClick={handleMenu}
                     sx={{
-                      padding: "0.1px 20px",
-                      background: "#1FA2C5",
-                      position: "absolute",
-                      right: "-60px",
-                      borderRadius: "3px",
+                      padding: "20px",
+                      background: "white",
+                      color: "#004B8D",
+                    }}
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                  >
+                    <Badge>
+                      <LocalLibraryIcon sx={{ fontSize: "40px" }} />
+                    </Badge>
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem
+                      sx={{ color: "#1FA2C5" }}
+                      onClick={()=>{
+                      <Hero />
+                      handleClose()
+
+                      }}
+                    >
+                      Моя страницa
+                    </MenuItem>
+                    <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
+                      Заказы
+                    </MenuItem>
+                    <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
+                      Сообщение
+                    </MenuItem>
+                    <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
+                      Друзья
+                    </MenuItem>
+                    <MenuItem sx={{ color: "gray" }} onClick={handleClose}>
+                      Выход
+                    </MenuItem>
+                  </Menu>
+
+                  <IconButton
+                    sx={{
+                      padding: "20px",
+                      background: "white",
+                      color: "#004B8D",
+                    }}
+                    aria-label="cart"
+                  >
+                    <StyledBadge badgeContent={4} color="secondary">
+                      <ShoppingCartIcon sx={{ fontSize: "40px" }} />
+                    </StyledBadge>
+                  </IconButton>
+                  <IconButton
+                    sx={{
+                      padding: "20px",
+                      background: "white",
+                      color: "#004B8D",
+                    }}
+                    aria-label="cart"
+                  >
+                    <StyledBadge color="secondary">
+                      <AccountCircleIcon sx={{ fontSize: "40px" }} />
+                    </StyledBadge>
+                  </IconButton>
+
+                  <IconButton
+                    onClick={() => nav("/admin")}
+                    sx={{
+                      padding: "20px",
+                      background: "white",
+                      color: "#004B8D",
                     }}
                   >
-                    <SearchIcon sx={{ fontSize: "30px" }} />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    sx={{
-                      width: "900px",
-                      height: "60px",
-                      color: "black",
-                      borderRadius: "8px",
-                      border: "1px solid gray",
-                      background: "#fff",
-                    }}
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                  />
-                </Search>
+                    <StyledBadge color="secondary">
+                      <CreateNewFolderIcon sx={{ fontSize: "40px" }} />
+                    </StyledBadge>
+                  </IconButton>
+                </Box>
+                <Box sx={{ display: { xs: "flex", md: "none" } }}>
+                  <IconButton
+                    size="large"
+                    aria-label="show more"
+                    aria-haspopup="true"
+                    onClick={handleMobileMenuOpen}
+                    color="inherit"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </Box>
               </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  width: "400px",
-                  gap: "20px",
-                }}
-              >
-                <IconButton
-                  onClick={handleMenu}
-                  sx={{
-                    padding: "20px",
-                    background: "white",
-                    color: "#1FA2C5",
-                  }}
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                >
-                  <Badge>
-                    <LocalLibraryIcon sx={{ fontSize: "40px" }} />
-                  </Badge>
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <Link to={"/signUp"}>
-                    <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
-                      Моя страница
-                    </MenuItem>
-                  </Link>
-                  <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
-                    Заказы
-                  </MenuItem>
-                  <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
-                    Сообщение
-                  </MenuItem>
-                  <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
-                    Друзья
-                  </MenuItem>
-                  <MenuItem sx={{ color: "gray" }} onClick={handleClose}>
-                    Выход
-                  </MenuItem>
-                </Menu>
-
-                <IconButton
-                  sx={{
-                    padding: "20px",
-                    background: "white",
-                    color: "#1FA2C5",
-                  }}
-                  aria-label="cart"
-                >
-                  <StyledBadge badgeContent={4} color="secondary">
-                    <ShoppingCartIcon sx={{ fontSize: "40px" }} />
-                  </StyledBadge>
-                </IconButton>
-
-                <IconButton
-                  onClick={() => nav("/admin")}
-                  sx={{
-                    padding: "20px",
-                    background: "white",
-                    color: "#1FA2C5",
-                  }}
-                >
-                  <StyledBadge color="secondary">
-                    <CreateNewFolderIcon sx={{ fontSize: "40px" }} />
-                  </StyledBadge>
-                </IconButton>
-              </Box>
-              <Box sx={{ display: { xs: "flex", md: "none" } }}>
-                <IconButton
-                  size="large"
-                  aria-label="show more"
-                  aria-haspopup="true"
-                  onClick={handleMobileMenuOpen}
-                  color="inherit"
-                >
-                  <MoreIcon />
-                </IconButton>
-              </Box>
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
-
-      <Box>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-            <Toolbar sx={{ background: "#fff", color: "black" }}>
+            </Toolbar>
+            <Box className="navbarSort">
               <Link to="/">
                 <Typography
                   variant="h6"
                   noWrap
                   component="div"
-                  sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                  sx={{ display: { xs: "none", sm: "block" } }}
                 >
-                  Home
+                  ГЛАВНАЯ
                 </Typography>
               </Link>
 
@@ -261,12 +267,42 @@ export default function Header() {
                   variant="h6"
                   noWrap
                   component="div"
-                  sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                  sx={{ display: { xs: "none", sm: "block" } }}
                 >
-                  List
+                  КНИГИ
                 </Typography>
               </Link>
-            </Toolbar>
+              <Link>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                  Я-АВТОР
+                </Typography>
+              </Link>
+              <Link>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                  КНИГИ ОПТОМ
+                </Typography>
+              </Link>
+              <Link>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                  ПРОДАЮ
+                </Typography>
+              </Link>
+            </Box>
           </AppBar>
         </Box>
       </Box>

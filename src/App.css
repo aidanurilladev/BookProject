@@ -2,6 +2,19 @@
   margin: 0;
   padding: 0;
 }
+.container {
+  margin: 0 auto;
+  width: 90%;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  padding: 10px 0;
+}
 
 a {
   text-decoration: none;
@@ -9,4 +22,62 @@ a {
   align-items: center;
   justify-content: center;
   width: 300px;
+}
+.card_list {
+  padding: 40px 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.carusel {
+  padding: 205px 0 100px 0;
+}
+.label {
+  position: absolute;
+  top: 300px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  width: 100%;
+}
+.author {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 40px 65%;
+  color: #fff;
+}
+.navbarSort {
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal_window {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0000002a;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(7px);
+  z-index: 1;
+}
+.modal_block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  width: 350px;
+  height: 80px;
+  border-radius: 10px;
+  border: 1px solid gray;
 }

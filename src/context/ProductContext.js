@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 import { API } from "../const/const";
 
 const INIT_STATE = {
@@ -47,6 +47,15 @@ const ProductContext = ({ children }) => {
     await axios.patch(`${API}/${id}`, newObj);
     readProduct();
   }
+
+  const [page, setPage] = useState(1);
+  const perPage = 5;
+  const count = Math.ceil(state.data.length / perPage);
+  function currentPage() {
+    const begin = (page - 1) * perPage;
+    const end = begin + perPage;
+    return state.data.slice(begin,end)
+  }
   const values = {
     addProduct,
     readProduct,
@@ -55,6 +64,9 @@ const ProductContext = ({ children }) => {
     getOneProduct,
     newObj: state.newObj,
     editProduct,
+    setPage,
+    currentPage,
+    count
   };
 
   return (

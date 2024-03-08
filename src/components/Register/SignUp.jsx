@@ -17,29 +17,23 @@ import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const nav = useNavigate();
-  const { register } = useAuthContext();
+  const { register ,signUpWithGoogle} = useAuthContext();
 
-  const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-    error: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmit() {
     try {
-      await register(userData.email, userData.password);
-      //   nav("/");
+      await register(email, password);
+      nav("/");
     } catch (error) {
-      setUserData(error.message);
+      setError(error.message);
     }
   }
-  function handleChangeInput(e) {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  }
+
   const [showPassword, setShowPassword] = useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -79,7 +73,7 @@ const SignUp = () => {
             Email Address
           </Typography>
           <TextField
-            onChange={handleChangeInput}
+            onChange={(e) => setEmail(e.target.value)}
             name="email"
             label="Email"
             variant="outlined"
@@ -95,7 +89,7 @@ const SignUp = () => {
             Password
           </Typography>
           <FormControl
-            onChange={handleChangeInput}
+            onChange={(e) => setPassword(e.target.value)}
             name="password"
             sx={{ width: "400px" }}
             variant="outlined"
@@ -136,6 +130,7 @@ const SignUp = () => {
         </Button>
         <Typography>Вы можете войти с помощью соц.сетей</Typography>
         <Button
+        onClick={()=>signUpWithGoogle()}
           sx={{
             display: "flex",
             justifyContent: "center",
