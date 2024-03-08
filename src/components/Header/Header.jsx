@@ -14,11 +14,13 @@ import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Typography } from "@mui/material";
+import { Avatar, Tooltip, Typography } from "@mui/material";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { Link, useNavigate } from "react-router-dom";
 import Hero from "./Hero";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useProduct } from "../../context/ProductContext";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,6 +72,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const { user, logOut } = useAuthContext();
+  const { setSearch } = useProduct();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -123,6 +127,7 @@ export default function Header() {
                       <SearchIcon sx={{ fontSize: "30px" }} />
                     </SearchIconWrapper>
                     <StyledInputBase
+                      onChange={(e) => setSearch(e.target.value)}
                       sx={{
                         width: "900px",
                         height: "55px",
@@ -177,10 +182,9 @@ export default function Header() {
                   >
                     <MenuItem
                       sx={{ color: "#1FA2C5" }}
-                      onClick={()=>{
-                      <Hero />
-                      handleClose()
-
+                      onClick={() => {
+                        <Hero />;
+                        handleClose();
                       }}
                     >
                       Моя страницa
@@ -194,7 +198,13 @@ export default function Header() {
                     <MenuItem sx={{ color: "#1FA2C5" }} onClick={handleClose}>
                       Друзья
                     </MenuItem>
-                    <MenuItem sx={{ color: "gray" }} onClick={handleClose}>
+                    <MenuItem
+                      sx={{ color: "gray" }}
+                      onClick={() => {
+                        handleClose();
+                        logOut();
+                      }}
+                    >
                       Выход
                     </MenuItem>
                   </Menu>
@@ -211,18 +221,30 @@ export default function Header() {
                       <ShoppingCartIcon sx={{ fontSize: "40px" }} />
                     </StyledBadge>
                   </IconButton>
-                  <IconButton
-                    sx={{
-                      padding: "20px",
-                      background: "white",
-                      color: "#004B8D",
-                    }}
-                    aria-label="cart"
-                  >
-                    <StyledBadge color="secondary">
-                      <AccountCircleIcon sx={{ fontSize: "40px" }} />
-                    </StyledBadge>
-                  </IconButton>
+                  {user ? (
+                    <>
+                      <Tooltip title={user.displayName}>
+                        <Avatar
+                          sx={{ width: "18%", height: "18%" }}
+                          src={user.photoURL}
+                          alt={user.displayName}
+                        />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <IconButton
+                      sx={{
+                        padding: "20px",
+                        background: "white",
+                        color: "#004B8D",
+                      }}
+                      aria-label="cart"
+                    >
+                      <StyledBadge color="secondary">
+                        <AccountCircleIcon sx={{ fontSize: "40px" }} />
+                      </StyledBadge>
+                    </IconButton>
+                  )}
 
                   <IconButton
                     onClick={() => nav("/admin")}

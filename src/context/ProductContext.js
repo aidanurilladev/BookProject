@@ -56,6 +56,18 @@ const ProductContext = ({ children }) => {
     const end = begin + perPage;
     return state.data.slice(begin,end)
   }
+
+function setSearch(search){
+  let res = state.data.filter((el) => el.name.toLowerCase().includes(search))
+  dispatch({
+    type: "GET",
+    payload: res
+  })
+  if(!search){
+    readProduct()
+  }
+}
+
   const values = {
     addProduct,
     readProduct,
@@ -66,7 +78,8 @@ const ProductContext = ({ children }) => {
     editProduct,
     setPage,
     currentPage,
-    count
+    count,
+    setSearch
   };
 
   return (

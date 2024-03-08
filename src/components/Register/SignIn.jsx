@@ -11,8 +11,25 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useAuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  const { signIn } = useAuthContext();
+  const nav = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  async function clickSignIn() {
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -43,6 +60,7 @@ const SignIn = () => {
             Email
           </Typography>
           <TextField
+            onChange={(e) => setEmail(e.target.value)}
             name="email"
             label="Email"
             variant="outlined"
@@ -57,7 +75,9 @@ const SignIn = () => {
           >
             Password
           </Typography>
+
           <FormControl
+            onChange={(e) => setPassword(e.target.value)}
             name="password"
             sx={{ width: "400px" }}
             variant="outlined"
@@ -86,16 +106,19 @@ const SignIn = () => {
         </Box>
         <Box>
           <Button
+            onClick={() => {
+              clickSignIn();
+              nav("/");
+            }}
             sx={{
               width: "400px",
               color: "#181818",
               fontWeight: "bold",
-              height: "50px",
               fontSize: "19px",
             }}
             variant="outlined"
           >
-            Primary
+            Sign In
           </Button>
         </Box>
       </Box>
