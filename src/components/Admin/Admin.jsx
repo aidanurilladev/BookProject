@@ -1,12 +1,15 @@
-import { Box, Button, IconButton, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Alert, Box, Button, IconButton, TextField } from "@mui/material";
+import React, { useReducer, useState } from "react";
 import { useProduct } from "../../context/ProductContext";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
 
-const Admin = () => {
-  const { addProduct } = useProduct();
 
+const Admin = () => {
+
+ 
+
+  const { addProduct } = useProduct();
   const [product, setProduct] = useState({
     name: "",
     price: "",
@@ -68,6 +71,9 @@ const Admin = () => {
             placeholder="Book_Name..."
             helperText="Incorrect entry."
             variant="filled"
+            // type="text"
+            // value={state.name}
+            // onChange={handleNameChange}
           />
           <TextField
             onChange={handleChangeInput}

@@ -2,23 +2,13 @@ import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Hero = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    setShowModal();
-  }, []);
+const Hero = ({ active, setActive }) => {
   return (
     <Box
-      sx={{
-        display:  showModal? "none"   : "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        // backdropFilter: "blur (10px)",
-      }}
-      className="modal_window"
+      onClick={() => setActive(false)}
+      className={active ? "modal_active" : "modal_window"}
     >
-      <Box className="modal_block">
+      <Box onClick={(e) => e.stopPropagation()} className="modal_content">
         <Box
           sx={{
             display: "flex",

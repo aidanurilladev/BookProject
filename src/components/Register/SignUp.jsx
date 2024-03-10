@@ -130,7 +130,10 @@ const SignUp = () => {
         </Button>
         <Typography>Вы можете войти с помощью соц.сетей</Typography>
         <Button
-        onClick={()=>signUpWithGoogle()}
+        onClick={()=>{
+          nav("/")
+          signUpWithGoogle()
+        }}
           sx={{
             display: "flex",
             justifyContent: "center",

@@ -9,12 +9,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PaginationCard from "../Pagination/PaginationCard";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const CardList = () => {
-  const { readProduct, data, deleteProduct, currentPage } = useProduct();
-
+  const { readProduct, data, deleteProduct, currentPage,getOneProduct} = useProduct();
   useEffect(() => {
     readProduct();
   }, []);
@@ -39,7 +39,7 @@ const CardList = () => {
                   sx={{
                     padding: "20px",
                     width: "250px ",
-                    height: "250px",
+                    height: "380px",
                   }}
                   image={el.image}
                   title="book"
@@ -96,7 +96,13 @@ const CardList = () => {
                     p: "25px",
                   }}
                 >
+
+                 
                   <Button
+                  onClick={()=> {
+                    getOneProduct(el.id)
+                    nav(`/booksInfo/${el.id}`)
+                  }}
                     sx={{
                       width: "100%",
                       background: "#1FA2C5",
@@ -104,13 +110,13 @@ const CardList = () => {
                     }}
                     variant="contained"
                   >
-                    В корзину
+                    О книге
                   </Button>
                 </Box>
               </Card>
             ))
           ) : (
-            <h1>Loading...</h1>
+            <CircularProgress />
           )}
         </Box>
       </Box>

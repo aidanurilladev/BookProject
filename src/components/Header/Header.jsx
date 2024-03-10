@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,13 +14,70 @@ import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Avatar, Tooltip, Typography } from "@mui/material";
-import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  Avatar,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Switch,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Hero from "./Hero";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useProduct } from "../../context/ProductContext";
 import { useAuthContext } from "../../context/AuthContext";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+  width: 62,
+  height: 34,
+  padding: 7,
+  "& .MuiSwitch-switchBase": {
+    margin: 1,
+    padding: 0,
+    transform: "translateX(6px)",
+    "&.Mui-checked": {
+      color: "#fff",
+      transform: "translateX(22px)",
+      "& .MuiSwitch-thumb:before": {
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+          "#fff"
+        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+      },
+      "& + .MuiSwitch-track": {
+        opacity: 1,
+        backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+      },
+    },
+  },
+  "& .MuiSwitch-thumb": {
+    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+    width: 32,
+    height: 32,
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      left: 0,
+      top: 0,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+        "#fff"
+      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+    },
+  },
+  "& .MuiSwitch-track": {
+    opacity: 1,
+    backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+    borderRadius: 20 / 2,
+  },
+}));
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -72,23 +129,32 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const [modalActive, setModalActive] = useState(false);
   const { user, logOut } = useAuthContext();
-  const { setSearch } = useProduct();
+  const { setSearch, sortByParams, sortByPrice, readBasket } = useProduct();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  function handleMenuSort(event) {
+    setOpenEl(event.currentTarget);
+  }
   const handleClose = () => {
     setAnchorEl(null);
+    setOpenEl(null);
   };
   const [anchorEl, setAnchorEl] = useState(null);
-  const [setMobileMoreAnchorEl] = React.useState(null);
+  const [openEl, setOpenEl] = useState(null);
+  const [setMobileMoreAnchorEl] = useState(null);
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const nav = useNavigate();
+
+  useEffect(() => {
+    readBasket();
+  }, []);
 
   return (
     <>
@@ -183,7 +249,8 @@ export default function Header() {
                     <MenuItem
                       sx={{ color: "#1FA2C5" }}
                       onClick={() => {
-                        <Hero />;
+                        setModalActive(true);
+
                         handleClose();
                       }}
                     >
@@ -210,6 +277,7 @@ export default function Header() {
                   </Menu>
 
                   <IconButton
+                    onClick={() => nav("/basket")}
                     sx={{
                       padding: "20px",
                       background: "white",
@@ -221,11 +289,23 @@ export default function Header() {
                       <ShoppingCartIcon sx={{ fontSize: "40px" }} />
                     </StyledBadge>
                   </IconButton>
+                  <IconButton
+                    onClick={() => nav("/admin")}
+                    sx={{
+                      padding: "20px",
+                      background: "white",
+                      color: "#004B8D",
+                    }}
+                  >
+                    <StyledBadge color="secondary">
+                      <AdminPanelSettingsIcon sx={{ fontSize: "40px" }} />
+                    </StyledBadge>
+                  </IconButton>
                   {user ? (
                     <>
                       <Tooltip title={user.displayName}>
                         <Avatar
-                          sx={{ width: "18%", height: "18%" }}
+                          sx={{ width: "17%", height: "82px" }}
                           src={user.photoURL}
                           alt={user.displayName}
                         />
@@ -245,19 +325,6 @@ export default function Header() {
                       </StyledBadge>
                     </IconButton>
                   )}
-
-                  <IconButton
-                    onClick={() => nav("/admin")}
-                    sx={{
-                      padding: "20px",
-                      background: "white",
-                      color: "#004B8D",
-                    }}
-                  >
-                    <StyledBadge color="secondary">
-                      <CreateNewFolderIcon sx={{ fontSize: "40px" }} />
-                    </StyledBadge>
-                  </IconButton>
                 </Box>
                 <Box sx={{ display: { xs: "flex", md: "none" } }}>
                   <IconButton
@@ -294,7 +361,7 @@ export default function Header() {
                   КНИГИ
                 </Typography>
               </Link>
-              <Link>
+              <Link to="/infoForAuthor">
                 <Typography
                   variant="h6"
                   noWrap
@@ -324,10 +391,87 @@ export default function Header() {
                   ПРОДАЮ
                 </Typography>
               </Link>
+              <Box className="navbar_sort_box">
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  variant="h6"
+                  onClick={handleMenuSort}
+                >
+                  Sort by <ExpandMoreIcon />{" "}
+                </Typography>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={openEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(openEl)}
+                  onClose={handleClose}
+                >
+                  <FormControl sx={{ p: " 0 20px" }}>
+                    <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+                    <RadioGroup
+                      onChange={(e) => {
+                        sortByParams("name", e.target.value);
+                        sortByPrice(e.target.value);
+                      }}
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      defaultValue="all"
+                      name="radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        onClick={handleClose}
+                        value="all"
+                        control={<Radio />}
+                        label="All"
+                      />
+                      <FormControlLabel
+                        onClick={handleClose}
+                        value="a-z"
+                        control={<Radio />}
+                        label="А-Я"
+                      />
+                      <FormControlLabel
+                        onClick={handleClose}
+                        value="z-a"
+                        control={<Radio />}
+                        label="Я-А"
+                      />
+                      <FormControlLabel
+                        onClick={handleClose}
+                        value="high-low"
+                        control={<Radio />}
+                        label="Сначала дешевле"
+                        />{" "}
+                      <FormControlLabel
+                        onClick={handleClose}
+                        value="low-high"
+                        control={<Radio />}
+                        label="Сначала дороже"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Menu>
+              </Box>
+              {/* <FormGroup> */}
+              <FormControlLabel
+                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+              />
             </Box>
           </AppBar>
         </Box>
       </Box>
+      <Hero active={modalActive} setActive={setModalActive} />;
     </>
   );
 }

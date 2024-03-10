@@ -7,5 +7,12 @@ export default function PaginationCard() {
   function handleClick(p, n) {
     setPage(n);
   }
-  return <Pagination onChange={handleClick} count={count} color="primary" />;
+  return (
+    <Pagination
+      onClick={handleClick}
+      count={count}
+      variant="outlined"
+      shape="rounded"
+    />
+  );
 }

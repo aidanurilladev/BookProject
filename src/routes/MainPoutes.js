@@ -6,6 +6,9 @@ import Home from "../components/Home/Home";
 import Edit from "../components/Edit/Edit";
 import SignIn from "../components/Register/SignIn";
 import SignUp from "../components/Register/SignUp";
+import BooksInfo from "../components/CardList/BooksInfo";
+import Basket from "../components/Basket";
+import InfoForAuthor from "../components/Register/InfoForAuthor";
 
 const MainPoutes = () => {
   const PUBLIC = [
@@ -16,6 +19,9 @@ const MainPoutes = () => {
     { link: "/edit/:id", element: <Edit />, id: 4 },
     { link: "/signIn", element: <SignIn />, id: 5 },
     { link: "/signUp", element: <SignUp />, id: 6 },
+    { link: "/booksInfo/:id", element: <BooksInfo />, id: 7 },
+    { link: "/basket", element: <Basket />, id: 8 },
+    { link: "/infoForAuthor", element: <InfoForAuthor />, id: 9 },
   ];
 
   return (
