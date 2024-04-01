@@ -9,8 +9,8 @@ const INIT_STATE = {
   basket: [],
 };
 
-export const useProduct = () => useContext(productContext);
 const productContext = createContext();
+export const useProduct = () => useContext(productContext);
 
 const reducer = (state = INIT_STATE, action) => {
   switch (action.type) {
@@ -58,7 +58,7 @@ const ProductContext = ({ children }) => {
   // ! CRUD
   // TODO PAGINATION
   const [page, setPage] = useState(1);
-  const perPage = 5;
+  const perPage = 10;
   const count = Math.ceil(state.data.length / perPage);
   function currentPage() {
     const begin = (page - 1) * perPage;
@@ -136,7 +136,7 @@ const ProductContext = ({ children }) => {
       const res = state.basket.some((el) => el.id === id);
       return !res;
     }
-    readBasket()
+    readBasket();
   }
 
   // ? DARK MODE

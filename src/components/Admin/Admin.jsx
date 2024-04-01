@@ -1,14 +1,17 @@
-import { Alert, Box, Button, IconButton, TextField } from "@mui/material";
-import React, { useReducer, useState } from "react";
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  colors,
+} from "@mui/material";
+import React, { useState } from "react";
 import { useProduct } from "../../context/ProductContext";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
 
-
 const Admin = () => {
-
- 
-
   const { addProduct } = useProduct();
   const [product, setProduct] = useState({
     name: "",
@@ -19,13 +22,60 @@ const Admin = () => {
     type: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    price: "",
+    author: "",
+    image: "",
+    annotation: "",
+    type: "",
+  });
+
   function handleChangeInput(e) {
+    const { name, value } = e.target;
+    let errorMessage = "";
+
+    if (value.trim() === "") {
+      errorMessage = "Поле не может быть пустым";
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errorMessage,
+    }));
+
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
     setProduct({ ...product, [e.target.name]: e.target.value });
   }
 
   function handleClickButton() {
+    const errors = {};
+
+    if (!product.name.trim()) {
+      errors.name = "Введите название книги";
+    }
+
+    if (!product.price.trim()) {
+      errors.price = "Введите цену книги";
+    } else if (isNaN(product.price.trim())) {
+      errors.price = "Цена должна быть числом";
+    }
+
+    if (!product.author.trim()) {
+      errors.author = "Введите автора книги";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+
     addProduct(product);
   }
+
   const nav = useNavigate();
 
   return (
@@ -49,7 +99,7 @@ const Admin = () => {
           alignItems: "center",
           flexDirection: "column",
           gap: "50px",
-          height: "90vh",
+          height: "70vh",
         }}
       >
         <Box
@@ -62,77 +112,76 @@ const Admin = () => {
           }}
         >
           <TextField
-            sx={{ width: "500px" }}
             onChange={handleChangeInput}
-            error
+            sx={{
+              width: "500px",
+            }}
+            name="name"
             id="filled-error-helper-text"
             label="Book_Name"
-            name="name"
             placeholder="Book_Name..."
-            helperText="Incorrect entry."
+            helperText={errors.name}
             variant="filled"
-            // type="text"
-            // value={state.name}
-            // onChange={handleNameChange}
           />
           <TextField
             onChange={handleChangeInput}
             sx={{ width: "500px" }}
-            error
             name="price"
             id="filled-error-helper-text"
             label="Book_Price"
             placeholder="Book_Price..."
-            helperText="Incorrect entry."
+            helperText={errors.price}
             variant="filled"
           />
           <TextField
             onChange={handleChangeInput}
             sx={{ width: "500px" }}
-            error
             name="author"
             id="filled-error-helper-text"
             label="Book_Author"
             placeholder="Book_Author..."
-            helperText="Incorrect entry."
+            helperText={errors.author}
             variant="filled"
           />
           <TextField
             onChange={handleChangeInput}
             sx={{ width: "500px" }}
-            error
             name="type"
             id="filled-error-helper-text"
             label="Book_Type"
             placeholder="Book_Type..."
-            helperText="Incorrect entry."
+            helperText={errors.type}
             variant="filled"
           />
           <TextField
             onChange={handleChangeInput}
             sx={{ width: "500px" }}
-            error
             name="image"
             id="filled-error-helper-text"
             label="Book_Image"
             placeholder="Book_Image..."
-            helperText="Incorrect entry."
+            helperText={errors.image}
             variant="filled"
           />
           <TextField
             onChange={handleChangeInput}
             sx={{ width: "500px" }}
-            error
             name="annotation"
             id="filled-error-helper-text"
             label="Book_Annotation"
             placeholder="Book_Annotation..."
-            helperText="Incorrect entry."
+            helperText={errors.annotation}
             variant="filled"
           />
         </Box>
         <Button
-          sx={{ background: "bisque" }}
+          sx={{
+            background: "bisque",
+            padding: "12px 22px",
+            fontWeight: "bold",
+            fontSize: "16px",
+            letterSpacing: "1.5px",
+          }}
           onClick={handleClickButton}
           color="secondary"
         >

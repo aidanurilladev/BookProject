@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useProduct } from "../../context/ProductContext";
+import { useAuthContext } from "../../context/AuthContext";
+import { Box, } from "@mui/material";
 import Card from "@mui/material/Card";
-import { Box, CircularProgress } from "@mui/material";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -9,32 +10,19 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import { useNavigate, useParams } from "react-router-dom";
-import PaginationCard from "../Pagination/PaginationCard";
 import { ADMIN } from "../../const/const";
-import { useAuthContext } from "../../context/AuthContext";
-import Header from "../Header/Header";
+import { useNavigate } from "react-router-dom";
 
-const CardList = () => {
+const CardForMain = () => {
   const { readProduct, data, deleteProduct, currentPage, getOneProduct } =
     useProduct();
   const { user } = useAuthContext();
   useEffect(() => {
     readProduct();
   }, []);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
   const nav = useNavigate();
   return (
     <Box id="card_list">
-      <Header />
       <Box className="container">
         <Typography
           sx={{
@@ -46,18 +34,7 @@ const CardList = () => {
           Бестселлеры
         </Typography>
         <Box className="card_list">
-          {loading ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: " 0 50%",
-              }}
-            >
-              <CircularProgress sx={{}} />
-            </Box>
-          ) :  data.length > 0 ? (
+          {data.slice(0,10).length ? (
             currentPage().map((el, index) => (
               <Card key={index} sx={{ maxWidth: 300 }}>
                 <CardMedia
@@ -91,7 +68,7 @@ const CardList = () => {
                     variant="body1"
                     color="#000"
                   >
-                    {el.price} c
+                    {el.price} C{" "}
                   </Typography>
                 </CardContent>
                 <CardActions
@@ -147,22 +124,23 @@ const CardList = () => {
               </Card>
             ))
           ) : (
-            <h1>load..</h1>
-            )} 
+            ""
+            // <CircularProgress />
+          )}
         </Box>
       </Box>
       <Box
-      sx={{
+        sx={{
           padding: "30px 0",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <PaginationCard />
+        {/* <PaginationCard /> */}
       </Box>
     </Box>
   );
 };
 
-export default CardList;
+export default CardForMain;

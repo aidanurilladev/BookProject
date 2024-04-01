@@ -7,7 +7,7 @@ import { useCartContext } from "../context/CartContext";
 
 const Basket = () => {
   const { basket, readBasket } = useProduct();
-  const { readProductFromCard, card, changeProductCount,deleteProductInCard } = useCartContext();
+  const { readProductFromCard, card, changeProductCount,deleteProductInCard ,sendProductFromTelegram} = useCartContext();
 
   const nav = useNavigate();
 
@@ -81,7 +81,9 @@ const Basket = () => {
             <img width={140} src={el.item.image} alt="book" />
             <Box>
               <Typography width={100}>{el.item.name}</Typography>
-              <DeleteIcon onClick={()=>deleteProductInCard(el.item.id)}  />
+              <DeleteIcon sx={{
+                color:"red"
+              }} onClick={()=>deleteProductInCard(el.item.id)}  />
             </Box>
             <Typography>{el.item.price} c</Typography>
             <input
@@ -125,6 +127,7 @@ const Basket = () => {
         >
           <Typography>ИТОГО: {card.totalPrice}</Typography>
           <Button
+          onClick={()=>sendProductFromTelegram(card.products)}
             sx={{
               width: "100px",
             }}

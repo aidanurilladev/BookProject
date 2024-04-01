@@ -7,17 +7,18 @@ import MainPoutes from "./routes/MainPoutes";
 import { BrowserRouter } from "react-router-dom";
 import AuthContext from "./context/AuthContext";
 import CartContext from "./context/CartContext";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <CartContext>
-      <AuthContext>
-        <ProductContext>
-          <App />
-          <MainPoutes />
-        </ProductContext>
-      </AuthContext>
-    </CartContext>
+      <CartContext>
+        <AuthContext>
+          <ProductContext>
+            <App />
+            <MainPoutes />
+          </ProductContext>
+        </AuthContext>
+      </CartContext>
   </BrowserRouter>
 );

@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const nav = useNavigate();
-  const { register ,signUpWithGoogle} = useAuthContext();
+  const { register, signUpWithGoogle } = useAuthContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,6 +46,10 @@ const SignUp = () => {
         height: "90vh",
       }}
     >
+      <img
+        src="https://i.pinimg.com/564x/18/11/f3/1811f344025539b7b4abb446eb6f910d.jpg"
+        alt=""
+      />
       <Box
         sx={{
           display: "flex",
@@ -57,7 +61,7 @@ const SignUp = () => {
       >
         <Typography
           sx={{
-            color: "#1FA2C5",
+            color: "blueviolet",
           }}
           variant="h4"
         >
@@ -130,10 +134,10 @@ const SignUp = () => {
         </Button>
         <Typography>Вы можете войти с помощью соц.сетей</Typography>
         <Button
-        onClick={()=>{
-          nav("/")
-          signUpWithGoogle()
-        }}
+          onClick={() => {
+            nav("/");
+            signUpWithGoogle();
+          }}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -148,6 +152,10 @@ const SignUp = () => {
           google
         </Button>
       </Box>
+      <img
+        src="https://i.pinimg.com/564x/83/4a/67/834a67b7a18094ddfdacc50059f2e68c.jpg"
+        alt=""
+      />
     </Box>
   );
 };

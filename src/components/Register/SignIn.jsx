@@ -36,19 +36,13 @@ const SignIn = () => {
     event.preventDefault();
   };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "70vh",
-      }}
-    >
+    <Box className="signIn">
+      <img
+        src="https://i.pinimg.com/564x/30/fb/1c/30fb1c37e9248661dc52460b89b533d8.jpg"
+        alt=""
+      />
       <Box sx={{ display: "flex", flexDirection: "column", gap: "30px" }}>
-        <Typography
-          sx={{ textAlign: "center", color: "blueviolet" }}
-          variant="h4"
-        >
+        <Typography sx={{ textAlign: "center", color: "blue" }} variant="h4">
           Sign In
         </Typography>
         <Box>
@@ -112,7 +106,7 @@ const SignIn = () => {
             }}
             sx={{
               width: "400px",
-              color: "#181818",
+              color: "#blue",
               fontWeight: "bold",
               fontSize: "19px",
             }}
@@ -122,6 +116,8 @@ const SignIn = () => {
           </Button>
         </Box>
       </Box>
+      
+      <img src="https://i.pinimg.com/564x/72/50/92/7250922aff1de8c5feec61d1fe90a567.jpg" alt="" />
     </Box>
   );
 };

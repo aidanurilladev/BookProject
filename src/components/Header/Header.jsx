@@ -32,6 +32,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useProduct } from "../../context/ProductContext";
 import { useAuthContext } from "../../context/AuthContext";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { ADMIN } from "../../const/const";
+import { useCartContext } from "../../context/CartContext";
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -132,6 +134,7 @@ export default function Header() {
   const [modalActive, setModalActive] = useState(false);
   const { user, logOut } = useAuthContext();
   const { setSearch, sortByParams, sortByPrice, readBasket } = useProduct();
+  const {card}= useCartContext()
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -285,22 +288,29 @@ export default function Header() {
                     }}
                     aria-label="cart"
                   >
-                    <StyledBadge badgeContent={4} color="secondary">
+                    <StyledBadge badgeContent={card.products.length} color="secondary">
                       <ShoppingCartIcon sx={{ fontSize: "40px" }} />
                     </StyledBadge>
                   </IconButton>
-                  <IconButton
-                    onClick={() => nav("/admin")}
-                    sx={{
-                      padding: "20px",
-                      background: "white",
-                      color: "#004B8D",
-                    }}
-                  >
-                    <StyledBadge color="secondary">
-                      <AdminPanelSettingsIcon sx={{ fontSize: "40px" }} />
-                    </StyledBadge>
-                  </IconButton>
+                  {ADMIN.map((el) =>
+                    user && el.email === user.email ? (
+                      <IconButton
+                        onClick={() => nav("/admin")}
+                        sx={{
+                          padding: "20px",
+                          background: "white",
+                          color: "#004B8D",
+                        }}
+                      >
+                        <StyledBadge color="secondary">
+                          <AdminPanelSettingsIcon sx={{ fontSize: "40px" }} />
+                        </StyledBadge>
+                      </IconButton>
+                    ) : (
+                      ""
+                    )
+                  )}
+
                   {user ? (
                     <>
                       <Tooltip title={user.displayName}>
@@ -401,7 +411,7 @@ export default function Header() {
                   variant="h6"
                   onClick={handleMenuSort}
                 >
-                  Sort by <ExpandMoreIcon />{" "}
+                 Сортировать <ExpandMoreIcon />{" "}
                 </Typography>
                 <Menu
                   id="menu-appbar"
@@ -433,7 +443,7 @@ export default function Header() {
                         onClick={handleClose}
                         value="all"
                         control={<Radio />}
-                        label="All"
+                        label="Все"
                       />
                       <FormControlLabel
                         onClick={handleClose}
@@ -452,7 +462,7 @@ export default function Header() {
                         value="high-low"
                         control={<Radio />}
                         label="Сначала дешевле"
-                        />{" "}
+                      />{" "}
                       <FormControlLabel
                         onClick={handleClose}
                         value="low-high"
